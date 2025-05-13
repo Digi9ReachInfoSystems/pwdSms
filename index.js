@@ -14,12 +14,19 @@ app.post("/twilioSMS", async (req, res) => {
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = twilio(accountSid, authToken);
+        for (let i = 0; i < to.length; i++) {
+            const message = await client.messages.create({
+                body: body,
+                from: "+17087296801",
+                to: to[i],
+            });
+        }
 
-        const message = await client.messages.create({
-            body: body,
-            from: "+17087296801",
-            to: to,
-        });
+        // const message = await client.messages.create({
+        //     body: body,
+        //     from: "+17087296801",
+        //     to: to,
+        // });
        
         res.status(200).send({success: true, message: "SMS sent successfully" });
     } catch (error) {
